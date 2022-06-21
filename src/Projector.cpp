@@ -13,6 +13,7 @@ void Projector::send_command(uint8_t slave_address, uint8_t *data, size_t size)
         Wire.write(data[0]);
     Wire.endTransmission();
 }
+//deneme
 
 void Projector::setLightSensorStatus(bool status)
 {
