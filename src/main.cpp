@@ -10,7 +10,7 @@ void setup()
   Serial.println("Started");
   delay(1000);
   Wire.begin();
-  projector.setLedCurrent(600);
+  projector.setLedCurrent(150);
   projector.setLightSensorStatus(true);
   delay(1000);
 }
@@ -23,7 +23,7 @@ void loop()
   delay(1000);
   projector.setLedStatus(false);
   Serial.println("INFO: Projector : closeLed");
-  projector.setLedCurrent(600);
+  projector.setLedCurrent(150);
   delay(3000);
 
 }

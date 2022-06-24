@@ -125,7 +125,7 @@ void Projector::setLedLight()
         
         Serial.print("Light Value: ");
         Serial.println(lightSensorValue);
-        artirma = yeniYakinlik / 2.7;
+        artirma = yeniYakinlik / 5.4;
         if(lightSensorValue<LED_SENSOR_VALUE){
             ledCurrentValue += artirma;
             Serial.print("Artirilmiş LedCurrent: ");
@@ -146,7 +146,7 @@ void Projector::setLedLight()
             Serial.print("Azaltilmiş LedCurrent: ");
             Serial.println(ledCurrentValue);
             setLedCurrent(ledCurrentValue);
-            delay(1000);
+            delay(2000);
             uint8_t data2[] = {PROJECTOR_READ_LIGHT_COMMAND};
             send_command(PROJECTOR_READ_LIGHT_ADDRESS, data2, sizeof(data2));
             Wire.requestFrom(PROJECTOR_READ_LIGHT_ADDRESS, 2);
