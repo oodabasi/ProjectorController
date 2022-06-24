@@ -14,7 +14,6 @@ void Projector::send_command(uint8_t slave_address, uint8_t *data, size_t size)
     Wire.endTransmission();
 }
 
-
 void Projector::setLightSensorStatus(bool status)
 {
     uint8_t data[2];
@@ -89,8 +88,10 @@ uint16_t Projector::readLight()
     if(state)
     {
         Serial.print("Islem sonucu: ");
-        Serial.println(LED_SENSOR_VALUE - yeniYakinlik);
-        return LED_SENSOR_VALUE - yeniYakinlik;
+        Serial.println(tempTotal);
+       // Serial.println(LED_SENSOR_VALUE - yeniYakinlik);
+       // return LED_SENSOR_VALUE - yeniYakinlik;
+       return tempTotal;
     }
     else return 0;
 }
@@ -99,10 +100,10 @@ void Projector::calculator(int yakinlik)
 {   
     Serial.print("Calculator'a girdi yakinlik değeri: ");
     Serial.println(yakinlik);
-
     if (yakinlik<=yeniYakinlik)
     {
         yeniYakinlik = yakinlik;
+        tempTotal = total;
         state = true;
         Serial.println("Yakinlik degisti!");
     }
@@ -130,31 +131,31 @@ void Projector::setLedLight()
             Serial.print("Artirilmiş LedCurrent: ");
             Serial.println(ledCurrentValue);
             setLedCurrent(ledCurrentValue);
-            // uint8_t data2[] = {PROJECTOR_READ_LIGHT_COMMAND};
-            // send_command(PROJECTOR_READ_LIGHT_ADDRESS, data2, sizeof(data2));
-            // Wire.requestFrom(PROJECTOR_READ_LIGHT_ADDRESS, 2);
-            // uint16_t result = Wire.read();
-            // uint16_t result2 = Wire.read();
-            // total = result2 << 8 | result;
-            // Serial.print("Son Light Value: ");
-            // Serial.println(total);  
+            delay(2000);
+            uint8_t data2[] = {PROJECTOR_READ_LIGHT_COMMAND};
+            send_command(PROJECTOR_READ_LIGHT_ADDRESS, data2, sizeof(data2));
+            Wire.requestFrom(PROJECTOR_READ_LIGHT_ADDRESS, 2);
+            uint16_t result = Wire.read();
+            uint16_t result2 = Wire.read();
+            total = result2 << 8 | result;
+            Serial.print("Son Light Value: ");
+            Serial.println(total);  
         }
         else if (lightSensorValue>LED_SENSOR_VALUE){
             ledCurrentValue -= artirma;
             Serial.print("Azaltilmiş LedCurrent: ");
             Serial.println(ledCurrentValue);
             setLedCurrent(ledCurrentValue);
-        //     delay(1000);
-        //     uint8_t data2[] = {PROJECTOR_READ_LIGHT_COMMAND};
-        //     send_command(PROJECTOR_READ_LIGHT_ADDRESS, data2, sizeof(data2));
-        //     Wire.requestFrom(PROJECTOR_READ_LIGHT_ADDRESS, 2);
-        //     uint16_t result = Wire.read();
-        //     uint16_t result2 = Wire.read();
-        //     total = result2 << 8 | result;
-        //     Serial.print("Son Light Value: ");
-        //     Serial.println(total);
+            delay(1000);
+            uint8_t data2[] = {PROJECTOR_READ_LIGHT_COMMAND};
+            send_command(PROJECTOR_READ_LIGHT_ADDRESS, data2, sizeof(data2));
+            Wire.requestFrom(PROJECTOR_READ_LIGHT_ADDRESS, 2);
+            uint16_t result = Wire.read();
+            uint16_t result2 = Wire.read();
+            total = result2 << 8 | result;
+            Serial.print("Son Light Value: ");
+            Serial.println(total);
 
-        // }
         }
     }
     yeniYakinlik = MAX_VALUE_PROXIMITY;

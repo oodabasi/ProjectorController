@@ -19,6 +19,7 @@ public:
     int yeniYakinlik = MAX_VALUE_PROXIMITY;
     float artirma = 0;
     bool state = false;
+    int tempTotal;
 
 private:
     void send_command(uint8_t, uint8_t *, size_t);
